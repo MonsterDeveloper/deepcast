@@ -31,6 +31,34 @@
       "mode": "no-view"
     },
     {
+      "name": "norwegian",
+      "title": "Translate Into Norwegian",
+      "subtitle": "Deepcast",
+      "description": "Translate selected text into Norwegian (Bokmål) using DeepL",
+      "mode": "no-view"
+    },
+    {
+      "name": "indonesian",
+      "title": "Translate Into Indonesian",
+      "subtitle": "Deepcast",
+      "description": "Translate selected text into Indonesian using DeepL",
+      "mode": "no-view"
+    },
+    {
+      "name": "korean",
+      "title": "Translate Into Korean",
+      "subtitle": "Deepcast",
+      "description": "Translate selected text into Korean using DeepL",
+      "mode": "no-view"
+    },
+    {
+      "name": "turkish",
+      "title": "Translate Into Turkish",
+      "subtitle": "Deepcast",
+      "description": "Translate selected text into Turkish using DeepL",
+      "mode": "no-view"
+    },
+    {
       "name": "chinese",
       "title": "Translate Into Chinese",
       "subtitle": "Deepcast",
