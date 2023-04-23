@@ -29,7 +29,7 @@ export async function sendTranslateRequest({
 
     try {
       const {
-        translations: [{ text: translation }],
+        translations: [{ text: translation, detected_source_language: detectedSourceLanguage }],
       } = await got
         .post(`https://api${isPro(key) ? "" : "-free"}.deepl.com/v2/translate`, {
           headers: {
@@ -41,10 +41,10 @@ export async function sendTranslateRequest({
             target_lang: targetLanguage,
           },
         })
-        .json<{ translations: { text: string }[] }>();
+        .json<{ translations: { text: string; detected_source_language: SourceLanguage }[] }>();
       await Clipboard.copy(translation);
       await showToast(Toast.Style.Success, "The translation was copied to your clipboard.");
-      return translation;
+      return { translation, detectedSourceLanguage };
     } catch (error) {
       console.error(error);
       await showToast(
