@@ -1,5 +1,6 @@
 import { getSelectedText, Clipboard, Toast, showToast, getPreferenceValues } from "@raycast/api";
 import got from "got";
+import { StatusCodes, getReasonPhrase } from "http-status-codes";
 
 interface Preferences {
   key: string;
@@ -11,6 +12,25 @@ export function getPreferences() {
 
 function isPro(key: string) {
   return !key.endsWith(":fx");
+}
+
+function gotErrorToString(error: unknown) {
+  // response received
+  if (error instanceof got.HTTPError) {
+    const { statusCode } = error.response;
+    if (statusCode === StatusCodes.FORBIDDEN) return "Invalid DeepL API key";
+    if (statusCode === StatusCodes.TOO_MANY_REQUESTS) return "Too many requests to DeepL API";
+    if (statusCode === 456)
+      return "DeepL API quota exceeded. The translation limit of your account has been reached. Consider upgrading your subscription.";
+    if (statusCode.toString().startsWith("5")) return "DeepL API is temporary unavailable. Please try again later.";
+
+    return `DeepL API returned ${statusCode} ${getReasonPhrase(statusCode)}`;
+  }
+
+  // request failed
+  if (error instanceof got.RequestError) return `Failed to send a request to DeepL API: ${error.code} ${error.message}`;
+
+  return "Unknown error";
 }
 
 export async function sendTranslateRequest({
@@ -46,12 +66,7 @@ export async function sendTranslateRequest({
       await showToast(Toast.Style.Success, "The translation was copied to your clipboard.");
       return { translation, detectedSourceLanguage };
     } catch (error) {
-      console.error(error);
-      await showToast(
-        Toast.Style.Failure,
-        "Something went wrong",
-        "Check your internet connection, API key, or you've maxed out the API."
-      );
+      await showToast(Toast.Style.Failure, "Something went wrong", gotErrorToString(error));
     }
   } catch (error) {
     await showToast(Toast.Style.Failure, "Please select the text to be translated");
