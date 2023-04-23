@@ -19,8 +19,8 @@ export async function sendTranslateRequest({
   targetLanguage,
 }: {
   text?: string;
-  sourceLanguage?: string;
-  targetLanguage: string;
+  sourceLanguage?: SourceLanguage;
+  targetLanguage: TargetLanguage;
 }) {
   try {
     const text = initialText || (await getSelectedText());
@@ -58,7 +58,7 @@ export async function sendTranslateRequest({
   }
 }
 
-export async function translate(target: string) {
+export async function translate(target: TargetLanguage) {
   await sendTranslateRequest({ targetLanguage: target });
 }
 
