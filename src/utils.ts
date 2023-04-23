@@ -3,11 +3,14 @@ import got from "got";
 
 interface Preferences {
   key: string;
-  pro: boolean;
 }
 
 export function getPreferences() {
   return getPreferenceValues<Preferences>();
+}
+
+function isPro(key: string) {
+  return !key.endsWith(":fx");
 }
 
 export async function sendTranslateRequest({
@@ -22,13 +25,13 @@ export async function sendTranslateRequest({
   try {
     const text = initialText || (await getSelectedText());
 
-    const { key, pro } = getPreferences();
+    const { key } = getPreferences();
 
     try {
       const {
         translations: [{ text: translation }],
       } = await got
-        .post(`https://api${pro ? "" : "-free"}.deepl.com/v2/translate`, {
+        .post(`https://api${isPro(key) ? "" : "-free"}.deepl.com/v2/translate`, {
           headers: {
             Authorization: `DeepL-Auth-Key ${key}`,
           },

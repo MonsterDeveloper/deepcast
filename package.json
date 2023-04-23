@@ -249,15 +249,6 @@
       "required": true,
       "title": "API key",
       "type": "password"
-    },
-    {
-      "default": false,
-      "description": "Check if you have DeepL API Pro",
-      "label": "Check if you have DeepL API Pro",
-      "name": "pro",
-      "required": true,
-      "title": "DeepL API Pro",
-      "type": "checkbox"
     }
   ],
   "dependencies": {
